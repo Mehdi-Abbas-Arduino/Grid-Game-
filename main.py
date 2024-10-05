@@ -1,9 +1,11 @@
 import random
+
 rows, cols = 5, 5
 Grid = [['0' for _ in range(cols)] for _ in range(rows)]
+
 def place_X(grid):  
     while True:
-    #    Checks it's not on top left corner of page  
+        # Checks it's not on top left corner of page  
         x = random.randint(0, rows - 1)
         y = random.randint(0, cols - 1)
         if x != 0 or y != 0:
@@ -15,11 +17,24 @@ def place_X(grid):
             if grid[i][j] != 'X':
                 grid[i][j] = '0'
     return x, y 
+
+def display_grid(grid, player_pos):
+    for i in range(rows):
+        for j in range(cols):
+            if [i, j] == player_pos:
+                print("P", end=" ")  # Display the player position
+            else:
+                print(grid[i][j], end=" ")
+        print()
+
 x_pos, y_pos = place_X(Grid)
-# Players Starting position
+
+# Player's starting position
 player_pos = [0, 0]
 moves_remaining = 10
+
 print("Welcome to the game! You have 10 moves to find the secret cell.")
+
 def give_hint(player_pos, secret_pos):
     player_x, player_y = player_pos
     secret_x, secret_y = secret_pos
@@ -43,8 +58,10 @@ def give_hint(player_pos, secret_pos):
         print("Up-right.")
     elif x_diff < 0 and y_diff < 0:
         print("Up-left.")
+
 while moves_remaining > 0:
     print(f"\nMoves remaining: {moves_remaining}")
+    display_grid(Grid, player_pos)  # Display the grid with the player position
     direction = input("Enter move (left/right/up/down): ").lower()
     x, y = player_pos
     if direction == 'left':
@@ -70,8 +87,9 @@ while moves_remaining > 0:
 
     # Check if the player has found the 'X'
     if Grid[x][y] == 'X':
+        display_grid(Grid, player_pos)  # Display the final board with the player at 'X'
         print("You Win! You found the secret cell.")
         break
 else:
-    
+    display_grid(Grid, player_pos)  # Display the final board when moves are over
     print("You Lose! You couldn't find the secret cell.")
